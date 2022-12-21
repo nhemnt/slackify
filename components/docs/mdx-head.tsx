@@ -19,7 +19,7 @@ export default function MdxHead({ params, og }: MdxHeadProps) {
     return null
   }
 
-  const title = `${mdxDoc.title} - Taxonomy`
+  const title = `${mdxDoc.title} - Slackify`
   const url = process.env.NEXT_PUBLIC_APP_URL
   let ogUrl = new URL(`${url}/og.jpg`)
 
