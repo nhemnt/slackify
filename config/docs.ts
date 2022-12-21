@@ -21,6 +21,58 @@ export const docsConfig: DocsConfig = {
         },
       ],
     },
+   
+    {
+      title: "API",
+      items: [
+        {
+          title: "Advent of code - Private leaderbord slack bot",
+          href: "/docs/in-progress",
+          disabled: true,
+        },
+        {
+          title: "Slack custom announcements",
+          href: "/docs/in-progress",
+          disabled: true,
+        },
+        {
+          title: "Generate certificates",
+          href: "/docs/in-progress",
+          disabled: true,
+        },
+      ],
+    },
+    {
+      title: "Blog",
+      items: [
+        {
+          title: "Creating a Custom Slack App: A Beginner's Guide",
+          href: "/docs/in-progress",
+          disabled: true,
+        },
+        {
+          title: "Adding your Advent of Code [AoC] Leaderboard to Slack Channel",
+          href: "/docs/in-progress",
+          disabled: true,
+        },
+       
+        {
+          title: "Creating Eye-Catching Slack Messages using the API",
+          href: "/docs/in-progress",
+          disabled: true,
+        },
+        {
+          title: "Automating Certificate Creation for Participants",
+          href: "/docs/in-progress",
+          disabled: true,
+        },
+        {
+          title: "A Step-by-Step Guide to Storing Certificates in Cloudinary using the API",
+          href: "/docs/in-progress",
+          disabled: true,
+        },
+      ],
+    },
     {
       title: "Documentation",
       items: [
@@ -52,85 +104,65 @@ export const docsConfig: DocsConfig = {
         },
       ],
     },
-    {
-      title: "Blog",
-      items: [
-        {
-          title: "Introduction",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-        {
-          title: "Build your own",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-        {
-          title: "Writing Posts",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-      ],
-    },
-    {
-      title: "Dashboard",
-      items: [
-        {
-          title: "Introduction",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-        {
-          title: "Layouts",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-        {
-          title: "Server Components",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-        {
-          title: "Authentication",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-        {
-          title: "Database with Prisma",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-        {
-          title: "API Routes",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-      ],
-    },
-    {
-      title: "Marketing Site",
-      items: [
-        {
-          title: "Introduction",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-        {
-          title: "File Structure",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-        {
-          title: "Tailwind CSS",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-        {
-          title: "Typography",
-          href: "/docs/in-progress",
-          disabled: true,
-        },
-      ],
-    },
+    // {
+    //   title: "Dashboard",
+    //   items: [
+    //     {
+    //       title: "Introduction",
+    //       href: "/docs/in-progress",
+    //       disabled: true,
+    //     },
+    //     {
+    //       title: "Layouts",
+    //       href: "/docs/in-progress",
+    //       disabled: true,
+    //     },
+    //     {
+    //       title: "Server Components",
+    //       href: "/docs/in-progress",
+    //       disabled: true,
+    //     },
+    //     {
+    //       title: "Authentication",
+    //       href: "/docs/in-progress",
+    //       disabled: true,
+    //     },
+    //     {
+    //       title: "Database with Prisma",
+    //       href: "/docs/in-progress",
+    //       disabled: true,
+    //     },
+    //     {
+    //       title: "API Routes",
+    //       href: "/docs/in-progress",
+    //       disabled: true,
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Marketing Site",
+    //   items: [
+    //     {
+    //       title: "Introduction",
+    //       href: "/docs/in-progress",
+    //       disabled: true,
+    //     },
+    //     {
+    //       title: "File Structure",
+    //       href: "/docs/in-progress",
+    //       disabled: true,
+    //     },
+    //     {
+    //       title: "Tailwind CSS",
+    //       href: "/docs/in-progress",
+    //       disabled: true,
+    //     },
+    //     {
+    //       title: "Typography",
+    //       href: "/docs/in-progress",
+    //       disabled: true,
+    //     },
+    //   ],
+    // },
   ],
 }

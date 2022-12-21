@@ -43,8 +43,8 @@ export default async function IndexPage() {
             What&apos;s going on here?
           </h1>
           <p className="max-w-[42rem] leading-normal text-slate-700 sm:text-xl sm:leading-8">
-            I&apos;m building a web app with Next.js 13 and open sourcing
-            everything. Follow along as we figure this out together.
+            I&apos;m building a web app to play around with slack and open
+            sourcing everything. Follow along as we figure this out together.
           </p>
         </div>
         <div className="flex gap-4">
@@ -71,9 +71,12 @@ export default async function IndexPage() {
             Features
           </h2>
           <p className="max-w-[85%] leading-normal text-slate-700 sm:text-lg sm:leading-7">
-            This project is an experiment to see how a modern app, with features
-            like auth, subscriptions, API routes, and static pages would work in
-            Next.js 13 app dir.
+            This web application utilizes the Slack API to post daily messages
+            to a public channel. It includes features such as announcements and
+            custom message layouts, as well as daily reminders to keep users
+            informed and on track. This project is a hands-on exploration of how
+            a modern app integrates with the Slack API to enhance communication
+            and productivity
           </p>
         </div>
         <div className="grid justify-center gap-4 sm:grid-cols-2 md:max-w-[56rem] md:grid-cols-3">
@@ -92,13 +95,56 @@ export default async function IndexPage() {
           </div>
           <div className="relative overflow-hidden rounded-lg border border-slate-200 bg-white p-2 shadow-2xl">
             <div className="flex h-[180px] flex-col justify-between rounded-md bg-[#000000] p-6 text-slate-200">
-              <svg viewBox="0 0 24 24" className="h-12 w-12 fill-current">
-                <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38a2.167 2.167 0 0 0-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44a23.476 23.476 0 0 0-3.107-.534A23.892 23.892 0 0 0 12.769 4.7c1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442a22.73 22.73 0 0 0-3.113.538 15.02 15.02 0 0 1-.254-1.42c-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87a25.64 25.64 0 0 1-4.412.005 26.64 26.64 0 0 1-1.183-1.86c-.372-.64-.71-1.29-1.018-1.946a25.17 25.17 0 0 1 1.013-1.954c.38-.66.773-1.286 1.18-1.868A25.245 25.245 0 0 1 12 8.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933a25.952 25.952 0 0 0-1.345-2.32zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493a23.966 23.966 0 0 0-1.1-2.98c.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98a23.142 23.142 0 0 0-1.086 2.964c-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39a25.819 25.819 0 0 0 1.341-2.338zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143a22.005 22.005 0 0 1-2.006-.386c.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295a1.185 1.185 0 0 1-.553-.132c-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z" />
+              <svg viewBox="0 0 50 50" className="h-12 w-12 fill-current">
+                <path d="M 19 2 C 16.250484 2 14 4.2504839 14 7 C 14 9.7495161 16.250484 12 19 12 L 23 12 A 1.0001 1.0001 0 0 0 24 11 L 24 7 C 24 4.2504839 21.749516 2 19 2 z M 31 2 C 28.250484 2 26 4.2504839 26 7 L 26 19 C 26 21.749516 28.250484 24 31 24 C 33.749516 24 36 21.749516 36 19 L 36 7 C 36 4.2504839 33.749516 2 31 2 z M 19 4 C 20.668484 4 22 5.3315161 22 7 L 22 10 L 19 10 C 17.331516 10 16 8.6684839 16 7 C 16 5.3315161 17.331516 4 19 4 z M 31 4 C 32.668484 4 34 5.3315161 34 7 L 34 19 C 34 20.668484 32.668484 22 31 22 C 29.331516 22 28 20.668484 28 19 L 28 7 C 28 5.3315161 29.331516 4 31 4 z M 7 14 C 4.2504839 14 2 16.250484 2 19 C 2 21.749516 4.2504839 24 7 24 L 19 24 C 21.749516 24 24 21.749516 24 19 C 24 16.250484 21.749516 14 19 14 L 7 14 z M 43 14 C 40.250484 14 38 16.250484 38 19 L 38 23 A 1.0001 1.0001 0 0 0 39 24 L 43 24 C 45.749516 24 48 21.749516 48 19 C 48 16.250484 45.749516 14 43 14 z M 7 16 L 19 16 C 20.668484 16 22 17.331516 22 19 C 22 20.668484 20.668484 22 19 22 L 7 22 C 5.3315161 22 4 20.668484 4 19 C 4 17.331516 5.3315161 16 7 16 z M 43 16 C 44.668484 16 46 17.331516 46 19 C 46 20.668484 44.668484 22 43 22 L 40 22 L 40 19 C 40 17.331516 41.331516 16 43 16 z M 7 26 C 4.2504839 26 2 28.250484 2 31 C 2 33.749516 4.2504839 36 7 36 C 9.7495161 36 12 33.749516 12 31 L 12 27 A 1.0001 1.0001 0 0 0 11 26 L 7 26 z M 19 26 C 16.250484 26 14 28.250484 14 31 L 14 43 C 14 45.749516 16.250484 48 19 48 C 21.749516 48 24 45.749516 24 43 L 24 31 C 24 28.250484 21.749516 26 19 26 z M 31 26 C 28.250484 26 26 28.250484 26 31 C 26 33.749516 28.250484 36 31 36 L 43 36 C 45.749516 36 48 33.749516 48 31 C 48 28.250484 45.749516 26 43 26 L 31 26 z M 7 28 L 10 28 L 10 31 C 10 32.668484 8.6684839 34 7 34 C 5.3315161 34 4 32.668484 4 31 C 4 29.331516 5.3315161 28 7 28 z M 19 28 C 20.668484 28 22 29.331516 22 31 L 22 43 C 22 44.668484 20.668484 46 19 46 C 17.331516 46 16 44.668484 16 43 L 16 31 C 16 29.331516 17.331516 28 19 28 z M 31 28 L 43 28 C 44.668484 28 46 29.331516 46 31 C 46 32.668484 44.668484 34 43 34 L 31 34 C 29.331516 34 28 32.668484 28 31 C 28 29.331516 29.331516 28 31 28 z M 27 38 A 1.0001 1.0001 0 0 0 26 39 L 26 43 C 26 45.749516 28.250484 48 31 48 C 33.749516 48 36 45.749516 36 43 C 36 40.250484 33.749516 38 31 38 L 27 38 z M 28 40 L 31 40 C 32.668484 40 34 41.331516 34 43 C 34 44.668484 32.668484 46 31 46 C 29.331516 46 28 44.668484 28 43 L 28 40 z" />
               </svg>
               <div className="space-y-2">
-                <h3 className="font-bold text-slate-100">React 18</h3>
+                <h3 className="font-bold text-slate-100">Slack API</h3>
                 <p className="text-sm text-slate-100">
-                  Server and Client Components. Use hook.
+                  Announcements and Reminders, Custom Layouts
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="relative overflow-hidden rounded-lg border border-slate-200 bg-white p-2 shadow-2xl">
+            <div className="flex h-[180px] flex-col justify-between rounded-md bg-[#000000] p-6 text-slate-200">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-12 w-12 fill-current"
+                viewBox="0 0 172.8 113.18"
+              >
+                <defs>
+                  <style
+                    dangerouslySetInnerHTML={{ __html: ".cls-1{fill:#fff;}" }}
+                  />
+                </defs>
+                <g id="Layer_2" data-name="Layer 2">
+                  <g id="Layer_1-2" data-name="Layer 1">
+                    <path
+                      className="cls-1"
+                      d="M140.25,40.27A57.84,57.84,0,0,0,85.56,0,56.75,56.75,0,0,0,35.24,29.9a42.79,42.79,0,0,0-10.33,81l1.08.5h.06V99.23a31.95,31.95,0,0,1,13.31-59l3-.31,1.31-2.74A46,46,0,0,1,85.56,10.85a46.83,46.83,0,0,1,45.19,35.79l1,4.11,4.23.07a26.56,26.56,0,0,1,26,26.44c0,10.11-5.83,18.36-15.72,22.55v11.55l.71-.24c15.95-5.21,25.86-18.19,25.86-33.86A37.49,37.49,0,0,0,140.25,40.27Z"
+                    />
+                    <path
+                      className="cls-1"
+                      d="M64.56,110l2.38,2.38a.47.47,0,0,1-.34.81H47.84a8.53,8.53,0,0,1-8.54-8.53V68.14a.47.47,0,0,0-.47-.47H34.76a.48.48,0,0,1-.34-.81L50.35,50.94a.46.46,0,0,1,.67,0L66.94,66.86a.47.47,0,0,1-.34.81H62.53a.47.47,0,0,0-.47.47V104A8.53,8.53,0,0,0,64.56,110Z"
+                    />
+                    <path
+                      className="cls-1"
+                      d="M99.76,110l2.38,2.38a.47.47,0,0,1-.34.81H83a8.53,8.53,0,0,1-8.54-8.53V77.32a.47.47,0,0,0-.47-.48H70a.48.48,0,0,1-.34-.81L85.55,60.11a.46.46,0,0,1,.67,0L102.14,76a.47.47,0,0,1-.34.81H97.73a.47.47,0,0,0-.47.48V104A8.53,8.53,0,0,0,99.76,110Z"
+                    />
+                    <path
+                      className="cls-1"
+                      d="M135,110l2.38,2.38a.47.47,0,0,1-.33.81H118.24a8.54,8.54,0,0,1-8.54-8.53V86.49a.47.47,0,0,0-.47-.47h-4.07a.47.47,0,0,1-.33-.81l15.92-15.93a.48.48,0,0,1,.67,0l15.92,15.93A.47.47,0,0,1,137,86h-4.08a.47.47,0,0,0-.47.47V104A8.53,8.53,0,0,0,135,110Z"
+                    />
+                  </g>
+                </g>
+              </svg>
+
+              <div className="space-y-2">
+                <h3 className="font-bold text-slate-100">Cloudinary</h3>
+                <p className="text-sm text-slate-100">
+                  UI components built using Radix UI and styled with Tailwind
+                  CSS.
                 </p>
               </div>
             </div>
@@ -116,20 +162,7 @@ export default async function IndexPage() {
               </div>
             </div>
           </div>
-          <div className="relative overflow-hidden rounded-lg border border-slate-200 bg-white p-2 shadow-2xl">
-            <div className="flex h-[180px] flex-col justify-between rounded-md bg-[#000000] p-6 text-slate-200">
-              <svg viewBox="0 0 24 24" className="h-12 w-12 fill-current">
-                <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z" />
-              </svg>
-              <div className="space-y-2">
-                <h3 className="font-bold text-slate-100">Components</h3>
-                <p className="text-sm text-slate-100">
-                  UI components built using Radix UI and styled with Tailwind
-                  CSS.
-                </p>
-              </div>
-            </div>
-          </div>
+
           <div className="relative overflow-hidden rounded-lg border border-slate-200 bg-white p-2 shadow-2xl">
             <div className="flex h-[180px] flex-col justify-between rounded-md bg-[#000000] p-6 text-slate-200">
               <svg
@@ -165,7 +198,7 @@ export default async function IndexPage() {
         </div>
         <div className="mx-auto flex flex-col gap-4 md:max-w-[52rem]">
           <p className="max-w-[85%] leading-normal text-slate-700 sm:text-lg sm:leading-7">
-            Taxonomy also includes a blog and a full-featured documentation site
+          Slackify also includes a blog and a full-featured documentation site
             built using Contentlayer and MDX.
           </p>
         </div>
@@ -177,7 +210,7 @@ export default async function IndexPage() {
             Proudly Open Source
           </h2>
           <p className="max-w-[85%] leading-normal text-slate-700 sm:text-lg sm:leading-7">
-            Taxonomy is open source and powered by open source software. The
+          Slackify is open source and powered by open source software. The
             code is available on{" "}
             <Link
               href={siteConfig.links.github}
