@@ -1,5 +1,9 @@
 # Slackify
 
+
+This repository was bootstrapped from [taxonomy](https://github.com/shadcn/taxonomy) by [shadcn](https://github.com/shadcn) and serves as a starting point for our own project. We want to give proper credit to [shadcn](https://github.com/shadcn) for their work and inspiration. Thank you for making your code available and for allowing us to build upon it. Any additional changes or contributions made by us will be noted in the commit history.
+
+
 An open source application built using the new router, server components and everything new in Next.js 13.
 
 > **Warning**
