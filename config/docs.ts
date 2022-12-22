@@ -32,8 +32,8 @@ export const docsConfig: DocsConfig = {
         },
         {
           title: "Slack custom announcements",
-          href: "/docs/in-progress",
-          disabled: true,
+          href: "/docs/slack-custom-announcements",
+          disabled: false,
         },
         {
           title: "Generate certificates",

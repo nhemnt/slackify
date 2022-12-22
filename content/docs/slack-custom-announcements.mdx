@@ -1,0 +1,77 @@
+---
+title: Slack custom announcements
+description: Slack custom announcements is a feature that allows you to send custom messages to your Slack channel. You can create and customize your announcements using blocks and make them interactive by adding buttons, images, and other elements.
+---
+
+<Callout>
+
+- The code and formatting for this API post were heavily inspired by the work of [taxonomy](https://tx.shadcn.com/). We wanted to give proper credit to the original source and let you know that the content in this post is our own interpretation and explanation of the code. We encourage you to check out the original [repository](https://github.com/shadcn/taxonomy) for more information and to show your support for the amazing work of the owner. Thank you for your understanding.
+
+</Callout>
+
+<Image
+  src="/images/blog/announcement-1.png"
+  width="718"
+  height="404"
+  alt="announcement 1"
+/>
+
+The slack announcement API is a function that allows you to send custom announcements to your slack channel. It can be triggered by a POST request to the API endpoint with a JSON body containing an array of blocks. These blocks are formatted according to the Slack Block Kit and can include text, images, and other interactive elements. The API will send the announcement to the configured webhook URI, which should be set as an environment variable. This API is useful for automating regular announcements or for sending one-time notifications to your team. To learn more about the different types of blocks that can be used, check out the Slack API reference at https://api.slack.com/reference/block-kit/blocks.
+
+## Behind the Scenes: A Closer Look at the Code
+
+```javascript
+import axios from "axios"
+import { NextApiRequest, NextApiResponse } from "next"
+import { withMethods } from "@/lib/api-middlewares/with-methods"
+import { withSecretAuthentication } from "@/lib/api-middlewares/with-secret-authentication"
+import { BadRequestError, InternalError, MissingFieldError } from "@/lib/errors"
+```
+
+## Custom Middleware for Handling API Methods in Next.js
+
+In our recent blog post, we covered how to use custom middleware for handling API methods in Next.js. This technique is useful for limiting the allowed HTTP methods for a specific endpoint, and can be easily implemented by wrapping the handler function with a higher-order function that checks the request method. If you missed it, you can check out the full post here: [Advent of code - Private leaderboard slack bot](/docs/advent-of-code-private-leaderboard-slack-bot).
+
+## Sending Custom Slack Announcements
+
+---
+
+<Image
+  src="/images/blog/announcement-2.png"
+  width="718"
+  height="404"
+  alt="announcement 2"
+/>
+---
+
+<Image
+  src="/images/blog/announcement-3.png"
+  width="718"
+  height="404"
+  alt="announcement 3"
+/>
+---
+
+This code is part of a function that handles an HTTP request with the method "POST". It is checking if the request has a body with a property called "blocks" and if it is an array with at least one element. If both of these conditions are met, it sends a POST request to the webhook URI specified in the environment variables with some additional data including the "blocks" array. If either of these conditions are not met, it throws a "BadRequestError" and if there is any other error thrown during this process, it throws an "InternalError". Finally, it sends a response with a status code of 200 and a message saying "ok" if the POST request to the webhook URI is successful.
+
+```javascript
+await axios.post(WEBHOOK_URI, {
+  username: `Advent of Code`,
+  icon_emoji: ":christmas_tree:",
+  blocks: blocks,
+})
+return res.status(200).send({ response: "ok" })
+```
+
+---
+
+<Image
+  src="/images/blog/blog-post-4.jpg"
+  width="718"
+  height="404"
+  alt="Image"
+/>
+
+## Endorse Me on LinkedIn and Add Some Fun to Your Endorsements
+
+I hope you enjoyed reading about how to use slack bots to send custom announcements. If you found this article helpful, I'd love it if you could endorse me on LinkedIn. Don't worry, I promise I'm much more skilled than just knowing how to code a slack bot. Plus, you'll get to add some funny language to your endorsements. Just follow this link to my LinkedIn profile: [Hemant Negi](https://www.linkedin.com/in/nhemnt/). Thanks in advance for your support!
