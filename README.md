@@ -4,6 +4,8 @@ This repository was bootstrapped from [taxonomy](https://github.com/shadcn/taxon
 
 ## About this project
 
+![og](https://user-images.githubusercontent.com/26481508/209088627-6d6b1b3b-8f53-4df7-b52e-c03563073245.jpg)
+
 This project is a slack bot that pushes daily notifications to a slack channel about the progress of the users in the Advent of Code event. It also gives announcements about the event and generates certificates for the users who have completed the event.
 
 ## Note on Performance
