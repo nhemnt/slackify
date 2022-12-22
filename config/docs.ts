@@ -26,9 +26,9 @@ export const docsConfig: DocsConfig = {
       title: "API",
       items: [
         {
-          title: "Advent of code - Private leaderbord slack bot",
-          href: "/docs/in-progress",
-          disabled: true,
+          title: "Advent of code - Private leaderboard slack bot",
+          href: "/docs/advent-of-code-private-leaderboard-slack-bot",
+          disabled: false,
         },
         {
           title: "Slack custom announcements",

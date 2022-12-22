@@ -1,0 +1,389 @@
+---
+title: Advent of code - Private leaderboard slack bot
+description: Never miss out on your team's Advent of Code rankings again with this Slack bot. Easily view the private leaderboard within your Slack workspace and get updates on your team's standings.
+---
+
+<Callout>
+
+- The code and formatting for this API post were heavily inspired by the work of [taxonomy](https://tx.shadcn.com/). We wanted to give proper credit to the original source and let you know that the content in this post is our own interpretation and explanation of the code. We encourage you to check out the original [repository](https://github.com/shadcn/taxonomy) for more information and to show your support for the amazing work of the owner. Thank you for your understanding.
+
+</Callout>
+
+<Image
+  src="/images/blog/blog-post-4.jpg"
+  width="718"
+  height="404"
+  alt="Image"
+/>
+
+This API work as a Slack bot that retrieves data from the Advent of Code event leaderboard and formats it into a message with rich formatting and images. The bot uses the Axios library to make HTTP requests, the cookie library to parse and serialize cookies, and the Lodash library for utility functions. It also uses a few custom middleware functions for handling API methods and secret authentication. The bot has a list of icons that it uses to display medal images for top performers on the leaderboard, and it has a function for generating a string of star emojis based on the number of stars a participant has earned. The code also includes a function for formatting dates and creating blocks of formatted text and images for the Slack message. The main function appears to be createBlocks, which takes a list of members, a URL, an organization name, and a board code, and returns an array of blocks for the Slack message. The blocks include information about each member's name, local score, stars, and last star won, as well as medal images for the top three performers and a link to the online leaderboard.
+
+## Digging into the Details: An In-Depth Look at the Code
+
+```javascript
+import axios from "axios"
+import cookie from "cookie"
+import lodash from "lodash"
+import { NextApiRequest, NextApiResponse } from "next"
+import { withMethods } from "@/lib/api-middlewares/with-methods"
+import { withSecretAuthentication } from "@/lib/api-middlewares/with-secret-authentication"
+import { InternalError, MissingFieldError } from "@/lib/errors"
+```
+
+This code imports several libraries and modules that are used in the Slack bot. The axios library is used for making HTTP requests, the cookie library is used for parsing and serializing cookies, and the lodash library provides utility functions. The NextApiRequest and NextApiResponse types are part of the Next.js framework and are used to define the shape of the request and response objects in the bot's API handler functions. The withMethods and withSecretAuthentication functions are custom middleware functions for handling API methods and secret authentication, respectively. The InternalError and MissingFieldError are custom error types.
+
+## Custom Middleware for Handling API Methods in Next.js
+
+### withMethods
+
+The withMethods function is a utility for creating Next.js API handler functions that only accept certain HTTP methods. It takes an array of allowed methods and a Next.js API handler function as arguments, and returns a new function that wraps the original handler. When this new function is called, it checks the request method against the list of allowed methods. If the method is not allowed, it returns a "Method Not Allowed" error (HTTP status code 405) to the client. If the method is allowed, it calls the original handler function with the request and response objects.
+
+Here is the code for the withMethods function:
+
+```javascript
+export function withMethods(methods: string[], handler: NextApiHandler) {
+  return async function (req: NextApiRequest, res: NextApiResponse) {
+    if (!methods.includes(req.method)) {
+      return res.status(405).end()
+    }
+
+    return handler(req, res)
+  }
+}
+```
+
+### withSecretAuthentication
+
+The withSecretAuthentication function is a utility for creating Next.js API handler functions that require a secret authentication token to access. It takes a Next.js API handler function as an argument and returns a new function that wraps the original handler. When this new function is called, it checks the request headers for an authorization header with a value equal to the API_SECRET_KEY environment variable prefixed with "Bearer". If the authorization header is not present or the value is not correct, it returns a "Forbidden" error (HTTP status code 403) to the client. If the authorization header is present and the value is correct, it calls the original handler function with the request and response objects.
+
+Here is the code for the withSecretAuthentication function:
+
+```javascript
+import type { NextApiHandler, NextApiRequest, NextApiResponse } from "next"
+
+export function withSecretAuthentication(handler: NextApiHandler) {
+  return async function (req: NextApiRequest, res: NextApiResponse) {
+    const { authorization } = req.headers
+    const isValid = authorization === `Bearer ${process.env.API_SECRET_KEY}`
+    if (!isValid) {
+      return res.status(403).end()
+    }
+
+    return handler(req, res)
+  }
+}
+```
+
+### Error classes
+
+The MissingFieldError and InternalError classes are custom error classes that are used to represent different types of errors that can occur in the Slack bot. The MissingFieldError class extends the BadRequestError class and represents an error that occurs when a required field is missing or invalid. The InternalError class extends the ApplicationError class and represents an error that occurs when an unexpected internal server error occurs.
+
+Here is the code for the MissingFieldError class:
+
+```javascript
+export class MissingFieldError extends BadRequestError {
+  constructor(fieldName, ...args) {
+    super(`${fieldName} is invalid or missing!`, args)
+  }
+}
+```
+
+This class has a single constructor that takes a fieldName argument and any additional arguments. It calls the parent class's constructor with a string that includes the fieldName and the additional arguments.
+
+Here is the code for the InternalError class:
+
+```javascript
+export class InternalError extends ApplicationError {
+  constructor(message = "Internal Server Error") {
+    super(500, message, arguments)
+  }
+}
+```
+
+This class has a single constructor that takes an optional message argument. If no message is provided, it uses a default value of "Internal Server Error". It calls the parent class's constructor with an HTTP status code of 500 and the message and arguments passed to the constructor.
+
+These custom error classes can be used to provide more context and detail when handling errors in the Slack bot. For example, if a required field is missing, the MissingFieldError can be thrown with the name of the missing field, and if an unexpected internal error occurs, the InternalError can be thrown with a relevant error message.
+
+---
+
+## Creating a Slack bot to display Advent of Code leaderboard data
+
+The handler function is a Next.js API handler function that is called when a POST request is made to the API. It is responsible for getting the leaderboard data from the Advent of Code website, formatting the data into a Slack message, and sending the message to a specified Slack webhook.
+
+The function starts by checking the request method. If it is not a POST request, the function ends and returns a "Method Not Allowed" error (HTTP status code 405). If the request method is POST, the function continues by extracting several environment variables that it needs in order to get the leaderboard data and send the Slack message. These variables are:
+
+LEADERBOARD_ID: The ID of the private leaderboard to get data for.
+SESSION_ID: The session ID cookie that is required to access the leaderboard data.
+WEBHOOK_URI: The URI of the Slack webhook to send the message to.
+YEAR: The year of the Advent of Code event.
+ORGANISATION: The name of the organization that the leaderboard belongs to.
+BOARD_CODE: The code that must be used to join the private leaderboard.
+If any of these variables are null, the function throws a MissingFieldError with a message describing the missing field.
+
+The function then calculates the current year if YEAR is not provided, and constructs the URL of the leaderboard data using the LEADERBOARD_ID and YEAR variables. It then makes a GET request to the Advent of Code website using the axios library, passing the SESSION_ID cookie in the request headers. The response from the website is the leaderboard data in JSON format.
+
+The function then uses the lodash library to sort the leaderboard data by local_score and stars in descending order. It then calls the createBlocks function with the sorted data, the leaderboard URL, the ORGANISATION name, and the BOARD_CODE to format the data into a Slack message.
+
+```javascript
+async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === "POST") {
+    const {
+      LEADERBOARD_ID,
+      SESSION_ID,
+      WEBHOOK_URI,
+      YEAR,
+      ORGANISATION,
+      BOARD_CODE,
+    } = process.env
+
+    if (LEADERBOARD_ID === null) {
+      throw new MissingFieldError("Missing leaderboard ID")
+    }
+
+    if (SESSION_ID === null) {
+      throw new MissingFieldError("Missing session ID")
+    }
+
+    if (WEBHOOK_URI === null) {
+      throw new MissingFieldError("Missing webhook URI")
+    }
+
+    if (BOARD_CODE === null) {
+      throw new MissingFieldError("Missing Private Board Code")
+    }
+
+    const year = YEAR || new Date().getFullYear()
+
+    const url = `https://adventofcode.com/${year}/leaderboard/private/view/${LEADERBOARD_ID}`
+
+    try {
+      const response = await axios.get(`${url}.json`, {
+        headers: { cookie: cookie.serialize("session", SESSION_ID) },
+      })
+
+      const members = lodash.orderBy(
+        response.data.members,
+        ["local_score", "stars"],
+        ["desc"]
+      )
+
+      // https://app.slack.com/block-kit-builder/T026NT2D4
+      const blocks = createBlocks(members, url, ORGANISATION, BOARD_CODE)
+      await axios.post(WEBHOOK_URI, {
+        username: `Advent of Code Leaderboard ${
+          ORGANISATION ? "| " + ORGANISATION : ""
+        } `,
+        icon_emoji: ":christmas_tree:",
+        blocks,
+      })
+
+      generateCertificate(members)
+      return res.status(200).send({ response: "ok" })
+    } catch (_err) {
+      // err contains sensitive info
+      throw new InternalError()
+    }
+  }
+}
+```
+
+## Utility Functions for Creating and Displaying a Leaderboard in Slack using the Slack API
+
+### ICONS
+
+The ICONS object provides links to images that can be used to represent different ranks in a leaderboard. The keys in this object are:
+
+1. FIRST_POSITION: a link to an image that represents the first position in a leaderboard
+2. SECOND_POSITION: a link to an image that represents the second position in a leaderboard
+3. THIRD_POSITION: a link to an image that represents the third position in a leaderboard
+4. PARTICIPATION: a link to an image that represents participation in a leaderboard
+
+```javascript
+export const ICONS = {
+  FIRST_POSITION: "https://cdn-icons-png.flaticon.com/512/3975/3975625.png",
+  SECOND_POSITION: "https://cdn-icons-png.flaticon.com/512/3975/3975628.png",
+  THIRD_POSITION: "https://cdn-icons-png.flaticon.com/512/3975/3975631.png",
+  PARTICIPATION: "https://cdn-icons-png.flaticon.com/512/179/179251.png",
+}
+```
+
+### getStars(count)
+
+This function takes an integer count and returns a string of :star: emojis that represent the value of count. For example, if count is 3, the function will return :star: :star: :star: .
+
+```javascript
+const getStars = (count) => {
+  if (!count) return ""
+
+  return [...new Array(count)].reduce((acc, curr) => {
+    return `${acc}:star: `
+  }, "")
+}
+```
+
+### getMedal(index, stars)
+
+This function takes an integer index and an integer stars and returns an object that represents a medal image based on the values of index and stars. If index is greater than 2 or stars is less than 1, the function will return an empty object. Otherwise, it will return an object with a type of 'image' and an accessory property that has the following structure
+
+```javascript
+const getMedal = (index, stars) => {
+  if (index > 2 || stars < 1) return {}
+  let url = ""
+  switch (index) {
+    case 0:
+      url = ICONS.FIRST_POSITION
+      break
+    case 1:
+      url = ICONS.SECOND_POSITION
+      break
+    case 2:
+      url = ICONS.THIRD_POSITION
+  }
+
+  return {
+    accessory: {
+      type: "image",
+      image_url: url,
+      alt_text: `${index + 1} position`,
+    },
+  }
+}
+```
+
+### formatDate(date)
+
+This function takes a numeric value date representing a Unix timestamp and returns a string representation of the date in the format 'MM/DD/YYYY'.
+
+```javascript
+const formatDate = (date) => {
+  if (!date) return ""
+  return new Date(date * 1000).toLocaleDateString()
+}
+```
+
+### divider
+
+This object represents a Slack block that is used to create a horizontal line between blocks of content. It has the following structure:
+
+```javascript
+const divider = {
+  type: "divider",
+}
+```
+
+## createBlocks(members, url, org, boardCode)
+
+The function createBlocks takes in four arguments:
+
+1. members: an array of objects containing member data such as name, stars, last_star_ts, and local_score
+2. url: a string representing the URL of the online leaderboard
+3. org: a string representing the name of the organization
+4. boardCode: a string representing the private board code
+   The function returns an array of blocks that can be used to display a leaderboard in a Slack message. The leaderboard includes information about each member's name, score, number of stars, and last star won date. The leaderboard also includes an image representing the member's rank and a link to the online leaderboard.
+
+Here's an example of how you might use this function:
+
+```javascript
+const members = [
+  {
+    name: "Jane",
+    stars: 3,
+    last_star_ts: 1609452800,
+    local_score: 50,
+  },
+  {
+    name: "John",
+    stars: 2,
+    last_star_ts: 1609372800,
+    local_score: 40,
+  },
+  {
+    name: "Bob",
+    stars: 1,
+    last_star_ts: 1609292800,
+    local_score: 30,
+  },
+]
+
+const url = "https://adventofcode.com/2021/leaderboard/private/view/123456"
+const org = "Acme Inc."
+const boardCode = "ABCDEF"
+
+const blocks = createBlocks(members, url, org, boardCode)
+```
+
+## Generating and Sending Advent of Code Leaderboard Certificates
+
+The createCertificateBlocks function takes an array of objects containing member names and certificate URLs, and returns an array of Slack blocks to be used in a Slack message. Each block contains an image element representing the member's certificate.
+
+```javascript
+const createCertificateBlocks = (urls) => {
+  const blocks = []
+  urls.forEach(({ name, url }, rank) => {
+    blocks.push({
+      type: "image",
+      title: {
+        type: "plain_text",
+        text: `Congratulations ${name} 🎊`,
+        emoji: true,
+      },
+      image_url: url,
+      alt_text: `${name} - ${rank} position certificate`,
+    })
+    blocks.push(divider)
+  })
+
+  return blocks
+}
+```
+
+The isEventOver function returns a boolean indicating whether the Advent of Code event has ended. The event end date is defined in the ADVENT_OF_CODE_EVENT_END object.
+
+```javascript
+function isEventOver() {
+  const now = new Date()
+  return (
+    now.getMonth() == ADVENT_OF_CODE_EVENT_END.MONTH &&
+    now.getDate() == ADVENT_OF_CODE_EVENT_END.DATE
+  )
+}
+```
+
+The generateCertificate function sends a request to the server to generate certificates for the members of the leaderboard. It then calls the createCertificateBlocks function to create the Slack blocks and sends a message containing the blocks to the specified Slack webhook URI. If the event has not ended, the function will exit early and no message will be sent.
+
+```javascript
+const generateCertificate = async (members) => {
+  if (!isEventOver()) return
+  const { WEBHOOK_URI } = process.env
+
+  if (WEBHOOK_URI === null) {
+    throw new MissingFieldError("Missing webhook URI")
+  }
+
+  const data = await axios.post(
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/certificate`,
+    {
+      members: members.map(({ name, stars }) => ({ name, stars })),
+    },
+    {
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+        authorization: `Bearer ${process.env.API_SECRET_KEY}`,
+      },
+    }
+  )
+
+  const urls = data?.data?.data
+
+  if (!(Array.isArray(urls) && urls.length)) return
+
+  const certificates = createCertificateBlocks(urls)
+  await axios.post(WEBHOOK_URI, {
+    username: `Advent of Code Leaderboard`,
+    icon_emoji: ":christmas_tree:",
+    blocks: certificates,
+  })
+}
+```
+
+In a separate blog post, we will delve into the details of our certificate generation API. Stay tuned for more information on how to generate certificates for top performers on your Advent of Code leaderboard. Check back in the coming weeks to learn more.
