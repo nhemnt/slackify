@@ -10,10 +10,10 @@ description: Never miss out on your team's Advent of Code rankings again with th
 </Callout>
 
 <Image
-  src="/images/blog/blog-post-4.jpg"
+  src="/images/blog/advent-of-code-slack.jpg"
   width="718"
   height="404"
-  alt="Image"
+  alt="advent of code slack ranking"
 />
 
 This API work as a Slack bot that retrieves data from the Advent of Code event leaderboard and formats it into a message with rich formatting and images. The bot uses the Axios library to make HTTP requests, the cookie library to parse and serialize cookies, and the Lodash library for utility functions. It also uses a few custom middleware functions for handling API methods and secret authentication. The bot has a list of icons that it uses to display medal images for top performers on the leaderboard, and it has a function for generating a string of star emojis based on the number of stars a participant has earned. The code also includes a function for formatting dates and creating blocks of formatted text and images for the Slack message. The main function appears to be createBlocks, which takes a list of members, a URL, an organization name, and a board code, and returns an array of blocks for the Slack message. The blocks include information about each member's name, local score, stars, and last star won, as well as medal images for the top three performers and a link to the online leaderboard.
@@ -387,3 +387,10 @@ const generateCertificate = async (members) => {
 ```
 
 In a separate blog post, we will delve into the details of our certificate generation API. Stay tuned for more information on how to generate certificates for top performers on your Advent of Code leaderboard. Check back in the coming weeks to learn more.
+
+<Image
+  src="/images/blog/blog-post-4.jpg"
+  width="718"
+  height="404"
+  alt="Image"
+/>

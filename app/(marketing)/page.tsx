@@ -7,7 +7,7 @@ import { siteConfig } from "@/config/site"
 async function getGitHubStars(): Promise<string | null> {
   try {
     const response = await fetch(
-      "https://api.github.com/repos/shadcn/taxonomy",
+      "https://api.github.com/repos/nhemnt/slackify",
       {
         headers: {
           Accept: "application/vnd.github+json",
@@ -198,7 +198,7 @@ export default async function IndexPage() {
         </div>
         <div className="mx-auto flex flex-col gap-4 md:max-w-[52rem]">
           <p className="max-w-[85%] leading-normal text-slate-700 sm:text-lg sm:leading-7">
-          Slackify also includes a blog and a full-featured documentation site
+            Slackify also includes a blog and a full-featured documentation site
             built using Contentlayer and MDX.
           </p>
         </div>
@@ -210,7 +210,7 @@ export default async function IndexPage() {
             Proudly Open Source
           </h2>
           <p className="max-w-[85%] leading-normal text-slate-700 sm:text-lg sm:leading-7">
-          Slackify is open source and powered by open source software. The
+            Slackify is open source and powered by open source software. The
             code is available on{" "}
             <Link
               href={siteConfig.links.github}
