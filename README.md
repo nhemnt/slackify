@@ -1,26 +1,10 @@
 # Slackify
 
-
 This repository was bootstrapped from [taxonomy](https://github.com/shadcn/taxonomy) by [shadcn](https://github.com/shadcn) and serves as a starting point for our own project. We want to give proper credit to [shadcn](https://github.com/shadcn) for their work and inspiration. Thank you for making your code available and for allowing us to build upon it. Any additional changes or contributions made by us will be noted in the commit history.
-
-
-An open source application built using the new router, server components and everything new in Next.js 13.
-
-> **Warning**
-> This app is a work in progress. I'm building this in public. You can follow the progress on Twitter [@shadcn](https://twitter.com/shadcn).
-> See the roadmap below.
-
-## Demo
-
-![screenshot-2](https://user-images.githubusercontent.com/124599/198038921-2b16b18b-cb4d-44b1-bd1d-6419d4a8d92c.png)
 
 ## About this project
 
-Right now, I'm using this project as an experiment to see how a modern app (with features like authentication, subscriptions, API routes, static pages for docs ...etc) would work in Next.js 13 and server components.
-
-I'll be posting updates and issues here.
-
-A few people have asked me to turn this into a starter. I think we could do that once the new features are out of beta.
+This project is a slack bot that pushes daily notifications to a slack channel about the progress of the users in the Advent of Code event. It also gives announcements about the event and generates certificates for the users who have completed the event.
 
 ## Note on Performance
 
@@ -28,10 +12,13 @@ A few people have asked me to turn this into a starter. I think we could do that
 > This app is using the canary releases for Next.js 13 and React 18. The new router and app dir is still in beta and not production-ready.
 > NextAuth.js, which is used for authentication, is also not fully supported in Next.js 13 and RSC.
 > **Expect some performance hits when testing the dashboard**.
-> If you see something broken, you can ping me [@shadcn](https://twitter.com/shadcn).
+> If you see something broken, you can ping me [@nhemnt](https://twitter.com/nhemnt).
 
 ## Features
 
+- Private leaderboard slack bot
+- Slack custom announcements
+- Generate certificate
 - New `/app` dir,
 - Routing, Layouts, Nested Layouts and Layout Groups
 - Data Fetching, Caching and Mutation
@@ -43,7 +30,6 @@ A few people have asked me to turn this into a starter. I think we could do that
 - Database on **PlanetScale**
 - UI Components built using **Radix UI**
 - Documentation and blog using **MDX** and **Contentlayer**
-- Subscriptions using **Stripe**
 - Styled using **Tailwind CSS**
 - Validations using **Zod**
 - Written in **TypeScript**
@@ -52,11 +38,13 @@ A few people have asked me to turn this into a starter. I think we could do that
 
 - [x] ~Add MDX support for basic pages~
 - [x] ~Build marketing pages~
-- [x] ~Subscriptions using Stripe~
+- [ ] Subscriptions using Stripe~
 - [x] ~Responsive styles~
 - [x] ~Add OG image for blog using @vercel/og~
 - [ ] Add tests
 - [ ] Dark mode
+- [ ] Choose template for certificate
+- [ ] Login using gmail and map oranisations
 
 ## Known Issues
 
@@ -65,12 +53,6 @@ A list of things not working right now:
 1. ~GitHub authentication (use email)~
 2. ~[Prisma: Error: ENOENT: no such file or directory, open '/var/task/.next/server/chunks/schema.prisma'](https://github.com/prisma/prisma/issues/16117)~
 3. ~[Next.js 13: Client side navigation does not update head](https://github.com/vercel/next.js/issues/42414)~
-
-## Why not tRPC, Turborepo or X?
-
-I might add this later. For now, I want to see how far we can get using Next.js only.
-
-If you have some suggestions, feel free to create an issue.
 
 ## Running Locally
 
@@ -94,4 +76,4 @@ pnpm dev
 
 ## License
 
-Licensed under the [MIT license](https://github.com/shadcn/taxonomy/blob/main/LICENSE.md).
+Licensed under the [MIT license](https://github.com/nhemnt/slackify/blob/main/LICENSE.md).
