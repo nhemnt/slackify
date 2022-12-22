@@ -25,16 +25,7 @@ export function Help() {
             This app is a work in progress. I&apos;m building this in public.
           </p>
           <p>
-            You can follow the progress on Twitter{" "}
-            <a
-              href={siteConfig.links.twitter}
-              target="_blank"
-              rel="noreferrer"
-              className="border-b border-b-white"
-            >
-              @shadcn
-            </a>{" "}
-            or on{" "}
+            You can follow the progress on{" "}
             <a
               href={siteConfig.links.github}
               target="_blank"
