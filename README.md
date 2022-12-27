@@ -16,6 +16,10 @@ This project is a slack bot that pushes daily notifications to a slack channel a
 > **Expect some performance hits when testing the dashboard**.
 > If you see something broken, you can ping me [@nhemnt](https://twitter.com/nhemnt).
 
+## Demo
+![Untitled design](https://user-images.githubusercontent.com/26481508/209655597-3e433e36-65c2-4feb-ba07-56bb0f760b00.png)
+
+
 ## Features
 
 - Private leaderboard slack bot
