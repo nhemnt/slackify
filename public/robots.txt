@@ -1,3 +1,22 @@
-# *
-User-agent: *
+User-agent: Googlebot
 Allow: /
+
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: *
+Disallow: /
+
+Sitemap: https://slackify-flax.vercel.app/sitemap.xml
