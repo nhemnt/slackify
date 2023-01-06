@@ -1,0 +1,227 @@
+---
+title: Generate certificates
+description: The certificate generation feature allows users to easily create personalized certificates for their completion of the 25-Day Coding Challenge. Using the Canvas library and Cloudinary service, the feature generates a unique certificate for each user based on their name, topic, and rank within the challenge.
+---
+
+<Image
+  src="/images/blog/certificates.jpg"
+  width="718"
+  height="404"
+  alt="announcement 1"
+/>
+The code includes a function printIt that takes in an object with user information
+and returns a promise containing an object with the user's name and the URL of their
+certificate image. The function creates a canvas, loads a certificate template image,
+and adds the user's name and topic to the canvas. It then adds a medal icon based
+on the user's rank and converts the canvas to a PNG image buffer. Depending on the
+method being used, the image can either be saved locally or uploaded to a Cloudinary
+bucket.
+
+The code also includes an async function handler that handles HTTP POST requests. When a POST request is received, the function generates a certificate for each member specified in the request body and returns an object containing the generated certificates. The handler function is wrapped in two higher-order functions: withMethods and withSecretAuthentication, which add additional functionality for handling different HTTP methods and secret authentication, respectively.
+
+## Understanding the Inner Workings of the Certificate Generation Service
+
+```javascript
+import { createCanvas, loadImage } from "canvas"
+import fs from "fs"
+import { withMethods } from "@/lib/api-middlewares/with-methods"
+import { withSecretAuthentication } from "@/lib/api-middlewares/with-secret-authentication"
+import { InternalError } from "@/lib/errors"
+import { NextApiRequest, NextApiResponse } from "next"
+import { ICONS } from "./advent-of-code"
+import { uploadImage } from "@/config/cloudinary"
+```
+
+## Importing libraries and helper functions
+
+In this code, we're using the createCanvas and loadImage functions from the canvas library to create a canvas element and load an image, respectively. The createCanvas function takes in the width and height of the canvas as arguments and returns a canvas element with the specified dimensions. The loadImage function takes in a file path or URL and returns a promise that, when resolved, will contain the image data.
+
+We're also importing the fs module, which provides an API for interacting with the file system in Node.js. We can use functions like fs.readFile and fs.writeFile to read and write files, respectively.
+
+We're also importing the ICONS constant from the ./advent-of-code module, which contains a list of medal icons that we can use in our certificate images. Finally, we're importing the uploadImage function from the @/config/cloudinary module, which allows us to upload images to a Cloudinary bucket. This function takes in an image buffer and a file name, and returns a promise that, when resolved, will contain information about the uploaded image.
+
+Note that the withMethods and withSecretAuthentication functions, as well as the InternalError class and the NextApiRequest and NextApiResponse types, which were also imported in the original code, have been omitted from this description as they have already been documented in another documentation post. you can check out the full post here: [Advent of code - Private leaderboard slack bot](/docs/advent-of-code-private-leaderboard-slack-bot)
+
+## Generating certificates for a list of members
+
+This code is part of an HTTP POST request handler function that generates certificates for a list of members.
+
+The members variable is initialized to the members property of the request body, or an empty array if the property doesn't exist. An empty array of promises is also initialized.
+
+The code then enters a try block, in which it iterates over the members array and generates a certificate for each member using the printIt function. The printIt function takes in an object with the user's name, topic, and rank, and returns a promise containing an object with the user's name and the URL of their certificate image. The generated certificates are added to the promises array as they are generated.
+
+After all the certificates have been generated, the Promise.all function is called on the promises array, which returns a promise that resolves when all the promises in the array have been resolved. The resolved value of the Promise.all promise is stored in the data variable.
+
+Finally, the code sends an HTTP response with a status code of 200 and a JSON object containing the string "ok" and the data array.
+
+If an error occurs during the certificate generation process, it is caught in the catch block, and a new InternalError is thrown. This error will be handled by the higher-order function that wraps the handler function.
+
+Here is an example of the payload that can be sent in the request body of an HTTP POST request to the API:
+
+```javascript
+{
+    "members": [
+        {
+            "name": "Alice",
+            "stars": 26
+        },
+        {
+            "name": "Bob",
+            "stars": 21
+        },
+        {
+            "name": "Charlie",
+            "stars": 20
+        },
+        {
+            "name": "Dave",
+            "stars": 22
+        },
+        {
+            "name": "Eve",
+            "stars": 8
+        },
+        {
+            "name": "Frank",
+            "stars": 6
+        },
+        {
+            "name": "Grace",
+            "stars": 1
+        },
+        {
+            "name": "Heather",
+            "stars": 0
+        },
+        {
+            "name": "Igor",
+            "stars": 0
+        }
+    ]
+}
+```
+
+This payload contains an array of objects, each representing a member. Each object has a name property, which is the name of the member, and a stars property, which is the number of stars the member has earned in the Advent of Code challenge. The API will generate a certificate for each member and return an array of objects containing the member's name and the URL of their certificate image.
+
+## Helper Functions for Generating and Saving Certificates
+
+### A Function for Determining the Appropriate Medal Icon : getMedal
+
+```javascript
+const getMedal = (rank) => {
+  switch (rank) {
+    case 1:
+      return ICONS.FIRST_POSITION
+    case 2:
+      return ICONS.SECOND_POSITION
+    case 3:
+      return ICONS.THIRD_POSITION
+    default:
+      return ICONS.PARTICIPATION
+  }
+}
+```
+
+This function takes in a rank as an argument and returns an appropriate medal icon based on the rank. If the rank is 1, it returns the first position icon. If the rank is 2, it returns the second position icon. If the rank is 3, it returns the third position icon. If the rank is any other number, it returns the participation icon.
+
+### A Function for Generating and Saving a Certificate: printIt
+
+```javascript
+const printIt = ({ name, topic, rank }) => {
+  const canvas = createCanvas(1056, 816)
+  const ctx = canvas.getContext("2d")
+  return new Promise((resolve, reject) => {
+    loadImage(process.cwd() + "/assets/certificate.png")
+      .then((image) => {
+        ctx.drawImage(image, 0, 0, 1056, 816)
+        ctx.font = "bold 40pt cursive"
+        ctx.textAlign = "center"
+        ctx.textBaseline = "top"
+        ctx.fillStyle = "#000"
+        ctx.fillText(name, 1056 / 2, 430)
+
+        ctx.font = "20pt cursive"
+        ctx.textAlign = "center"
+        ctx.textBaseline = "top"
+        ctx.fillStyle = "#000"
+        ctx.fillText(topic, 250, 680)
+
+        loadImage(getMedal(rank)).then(async (image) => {
+          ctx.drawImage(image, 460, 240, 120, 120)
+          const buffer = canvas.toBuffer("image/png")
+          // to upload it to cloudinary bucket
+          const result = await uploadImage(buffer, `${name}.png`)
+          result.name = name
+
+          // creating files for local
+          const fileName = name + Date.now()
+          const result = {
+            url: `http://localhost:3000/dist/${fileName}.png`,
+            name,
+          }
+          fs.writeFileSync(
+            process.cwd() + `/public/dist/${fileName}.png`,
+            buffer
+          )
+          resolve(result)
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  })
+}
+```
+
+This function takes in an object with three properties: name, topic, and rank. It returns a promise that resolves with an object containing a URL and a name.
+
+This function creates a canvas element using the createCanvas method from the canvas library. It then loads an image of a certificate using the loadImage method and draws it on the canvas. It then adds the name and topic to the canvas using the fillText method and adds a medal icon to the canvas based on the rank using the getMedal function. Finally, it converts the canvas to a buffer and saves the buffer to a file on the server. The function then returns an object containing the URL of the file and the name property.
+
+## Cloudinary Image Upload Service
+
+```javascript
+import streamifier from "streamifier"
+import { v2 as cloudinary } from "cloudinary"
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+})
+
+export const uploadImage = async (buffer, fileName) => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: process.env.CLOUDINARY_FOLDER_NAME || "custom_folder",
+        upload_preset: "ml_default",
+        filename_override: fileName,
+      },
+      (error, result) => {
+        if (result) resolve(result)
+        else reject(error)
+      }
+    )
+    streamifier.createReadStream(buffer).pipe(uploadStream)
+  })
+}
+```
+
+This service allows for the uploading of images to the Cloudinary cloud service. It uses the Cloudinary Node.js SDK to configure the cloud name, API key, and API secret, and then it provides a function uploadImage which takes a buffer and a file name, and returns a promise that resolves with the result of the upload. The function streams the buffer to Cloudinary and specifies the folder, upload preset, and file name override for the uploaded image. If the upload is successful, the promise resolves with the result of the upload, otherwise it rejects with an error.
+
+<Image
+  src="/images/blog/blog-post-4.jpg"
+  width="718"
+  height="404"
+  alt="Image"
+/>
+
+## Conclusion
+
+Thank you for following along with this tutorial on creating certificates using Node.js, Canvas, and Cloudinary. We've explored the code line by line and learned about the various helper functions and services that make it all possible.
+
+If you'd like to take a closer look at the code or want to use it in your own projects, you can find the source code on GitHub at [Slackify](https://github.com/nhemnt/slackify/) in the [certificate.ts](https://github.com/nhemnt/slackify/blob/main/pages/api/certificate.ts) file.
+
+I hope you found this tutorial helpful and are now able to create certificates in your own projects. If you have any questions or want to connect, feel free to ping me on Twitter at [@nhemnt](https://twitter.com/nhemnt).
+
+Until next time, happy coding!

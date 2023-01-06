@@ -37,8 +37,8 @@ export const docsConfig: DocsConfig = {
         },
         {
           title: "Generate certificates",
-          href: "/docs/in-progress",
-          disabled: true,
+          href: "/docs/generate-certificates",
+          disabled: false,
         },
       ],
     },
