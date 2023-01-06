@@ -11,12 +11,12 @@ export default function Head() {
 
       <meta property="og:title" content="Slackify" />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://tx.shadcn.com" />
-      <meta property="og:image" content="https://tx.shadcn.com/og.jpg" />
+      <meta property="og:url" content="https://slackify-flax.vercel.app/" />
+      <meta property="og:image" content="https://slackify-flax.vercel.app/og.jpg" />
       <meta name="twitter:title" content="Slackify" />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content="https://tx.shadcn.com" />
-      <meta name="twitter:image" content="https://tx.shadcn.com/og.jpg" />
+      <meta property="twitter:url" content="https://slackify-flax.vercel.app/" />
+      <meta name="twitter:image" content="https://slackify-flax.vercel.app/og.jpg" />
     </>
   )
 }

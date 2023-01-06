@@ -96,7 +96,7 @@ export default async function handler(req: NextRequest) {
               tw="flex text-xl"
               style={{ fontFamily: "Inter", fontWeight: "normal" }}
             >
-              tx.shadcn.com
+              slackify-flax.vercel.app
             </div>
             <div
               tw="flex items-center text-xl"
@@ -118,7 +118,7 @@ export default async function handler(req: NextRequest) {
                   stroke-linejoin="round"
                 />
               </svg>
-              <div tw="flex ml-2">github.com/shadcn/taxonomy</div>
+              <div tw="flex ml-2">github.com/nhemnt/slackify</div>
             </div>
           </div>
         </div>
