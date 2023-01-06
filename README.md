@@ -19,6 +19,8 @@ This project is a slack bot that pushes daily notifications to a slack channel a
 ## Demo
 ![Untitled design](https://user-images.githubusercontent.com/26481508/209655597-3e433e36-65c2-4feb-ba07-56bb0f760b00.png)
 
+![certificates](https://user-images.githubusercontent.com/26481508/210970063-7078a8e2-7e16-4b0a-9379-d5e081d01600.jpg)
+
 
 ## Features
 
