@@ -1,4 +1,3 @@
-import { docsConfig } from '@/config/docs';
 import { generateSiteMap } from '@/config/sitemap';
 
 function SiteMap() {
@@ -7,7 +6,7 @@ function SiteMap() {
 
 export async function getServerSideProps({ res }) {
 
-    // We generate the XML sitemap with the posts data
+    // We generate the XML sitemap with the docsConfig data
     const sitemap = generateSiteMap();
 
     res.setHeader('Content-Type', 'text/xml');
