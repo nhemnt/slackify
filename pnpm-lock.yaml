@@ -45,7 +45,7 @@ specifiers:
   next-auth: ^4.16.4
   next-contentlayer: ^0.2.9
   nodemailer: ^6.8.0
-  open-graph-scraper: ^5.1.0
+  open-graph-scraper: github:jshemas/openGraphScraper#ts-utils
   postcss: ^8.4.14
   postmark: ^3.0.14
   prettier: ^2.7.1
@@ -111,7 +111,7 @@ dependencies:
   next-auth: 4.18.7_gxrb4puqhmlxj5cjmftw47fgty
   next-contentlayer: 0.2.9_gvvct4imq5upoiloat43sswrza
   nodemailer: 6.8.0
-  open-graph-scraper: 5.1.0
+  open-graph-scraper: github.com/jshemas/openGraphScraper/9ae1df080bea13cdaad573c7a1b0a03ba114ac0c
   postmark: 3.0.15
   prop-types: 15.8.1
   raw-body: 2.5.1
@@ -5874,17 +5874,6 @@ packages:
     engines: {node: '>= 14.6.0'}
     dev: false
 
-  /open-graph-scraper/5.1.0:
-    resolution: {integrity: sha512-+7VhoR49bVlOHlg+5O5WdTlI3Rf0N8bxkc2Uk58DYQXo6Fe/CkM3HqoRDO6tDv7xONveK5SxZFimr1JsQmZFtQ==}
-    engines: {node: '>=14.16'}
-    dependencies:
-      chardet: 1.5.1
-      cheerio: 1.0.0-rc.12
-      got: 12.5.3
-      iconv-lite: 0.6.3
-      validator: 13.9.0
-    dev: false
-
   /open/8.4.0:
     resolution: {integrity: sha512-XgFPPM+B28FtCCgSb9I+s9szOC1vZRSwgWsRUA5ylIxRTgKozqjOCrVOqGsYABPYK5qnfqClxZTFBa8PKt2v6Q==}
     engines: {node: '>=12'}
@@ -7859,3 +7848,18 @@ packages:
 
   /zwitch/2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
+
+  github.com/jshemas/openGraphScraper/9ae1df080bea13cdaad573c7a1b0a03ba114ac0c:
+    resolution: {tarball: https://codeload.github.com/jshemas/openGraphScraper/tar.gz/9ae1df080bea13cdaad573c7a1b0a03ba114ac0c}
+    name: open-graph-scraper
+    version: 5.1.0
+    engines: {node: '>=14.16'}
+    prepare: true
+    requiresBuild: true
+    dependencies:
+      chardet: 1.5.1
+      cheerio: 1.0.0-rc.12
+      got: 12.5.3
+      iconv-lite: 0.6.3
+      validator: 13.9.0
+    dev: false
