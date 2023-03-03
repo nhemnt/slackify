@@ -1,42 +1,41 @@
 import axios from "axios"
-import ogs from "open-graph-scraper";
+import ogs from "open-graph-scraper"
 import { NextApiRequest, NextApiResponse } from "next"
 import { withMethods } from "@/lib/api-middlewares/with-methods"
 import { withSecretAuthentication } from "@/lib/api-middlewares/with-secret-authentication"
 import { InternalError } from "@/lib/errors"
 
 interface UrlData {
-  url: string;
-  title?: string;
+  url: string
+  title?: string
 }
 
 interface JsonData {
-  urls: UrlData[];
+  urls: UrlData[]
 }
 
 interface OGresult {
-  error: boolean;
-  result: any;
-  response: any;
+  error: boolean
+  result: any
+  response: any
 }
 interface OpenGraphData {
-  ogTitle?: string;
-  ogUrl?: string;
-  ogDescription?: string;
-  ogImage?: { url: string } | Array<{ url: string }>;
-  ogSiteName?: string;
-  twitterImage?: { url: string };
-  twitterDescription?: string;
-  requestUrl?: string;
+  ogTitle?: string
+  ogUrl?: string
+  ogDescription?: string
+  ogImage?: { url: string } | Array<{ url: string }>
+  ogSiteName?: string
+  twitterImage?: { url: string }
+  twitterDescription?: string
+  requestUrl?: string
 }
 
 interface NormalizedOGData {
-  title?: string;
-  url?: string;
-  description?: string;
-  image?: string;
+  title?: string
+  url?: string
+  description?: string
+  image?: string
 }
-
 
 // This function normalizes the OpenGraph data
 const normalizeOGData = (ogData: OpenGraphData): NormalizedOGData => {
@@ -48,19 +47,19 @@ const normalizeOGData = (ogData: OpenGraphData): NormalizedOGData => {
     twitterImage,
     twitterDescription,
     requestUrl,
-  } = ogData;
+  } = ogData
 
   const image =
     (Array.isArray(ogImage) ? ogImage[0]?.url : ogImage?.url) ||
-    twitterImage?.url;
+    twitterImage?.url
 
   return {
     title: ogTitle,
     url: ogUrl || requestUrl,
     description: ogDescription || twitterDescription,
     image,
-  };
-};
+  }
+}
 
 /**
  * Creates Slack blocks based on the given normalized OG data.
@@ -80,21 +79,11 @@ const createSlackBlocks = (data: NormalizedOGData[]) => {
     {
       type: "divider",
     },
-  ];
+  ]
   data.forEach((item: NormalizedOGData) => {
-    const { title, url, description, image } = item;
-    if (title) {
-      blocks.push({
-        type: "header",
-        text: {
-          type: "plain_text",
-          text: title,
-          emoji: true,
-        },
-      });
-    }
-
-    if (image) {
+    const { title, url, description, image } = item
+    if (blocks.length > 40) return blocks
+    if (image && !image.includes(".svg")) {
       blocks.push({
         type: "image",
         title: {
@@ -102,9 +91,9 @@ const createSlackBlocks = (data: NormalizedOGData[]) => {
           text: title,
           emoji: true,
         },
-        image_url: image,
+        image_url: encodeURI(image),
         alt_text: title,
-      });
+      })
     }
 
     if (description) {
@@ -112,7 +101,7 @@ const createSlackBlocks = (data: NormalizedOGData[]) => {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: description,
+          text: `*${title}* \n${description} \n\n`,
         },
         accessory: {
           type: "button",
@@ -121,19 +110,18 @@ const createSlackBlocks = (data: NormalizedOGData[]) => {
             text: "Read More",
             emoji: true,
           },
-          url: url,
+          url: encodeURI(url),
+          action_id: "button-action",
         },
-      });
+      })
     }
 
     blocks.push({
       type: "divider",
-    });
-  });
-  return blocks;
-};
-
-
+    })
+  })
+  return blocks
+}
 
 /**
  * The handler function receives a request and response object and filters out unwanted data from JSON.
@@ -142,68 +130,70 @@ const createSlackBlocks = (data: NormalizedOGData[]) => {
  */
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
-    const json: JsonData = req.body;
-    const { WEBHOOK_URI } = process.env;
-    const excludedList = JSON.parse(process.env.EXCLUDED_LIST || "") || [];
-    const excludeDomain = JSON.parse(process.env.EXCLUDED_DOMAIN || "") || [];
-    const regex = new RegExp(excludedList.join("|"), "i");
-    const excludeDomainRegex = new RegExp(excludeDomain.join("|"), "i");
-  
+    const json: JsonData = req.body
+    const { WEBHOOK_URI } = process.env
+    const excludedList = JSON.parse(process.env.EXCLUDED_LIST || "") || []
+    const excludeDomain = JSON.parse(process.env.EXCLUDED_DOMAIN || "") || []
+    const regex = new RegExp(excludedList.join("|"), "i")
+    const excludeDomainRegex = new RegExp(excludeDomain.join("|"), "i")
+
     // Filter out unwanted data from JSON
     const filteredList = json.urls.filter((str: UrlData) => {
       if (!str?.title) {
-        return false;
+        return false
       }
-      return !regex.test(str.title);
-    });
-  
+      return !regex.test(str.title)
+    })
+
     try {
-      const seenUrls = new Set<string>();
+      const seenUrls = new Set<string>()
       const uniqueData = filteredList.filter((item: UrlData) => {
         if (seenUrls.has(item.url)) {
-          return false;
+          return false
         } else {
-          seenUrls.add(item.url);
-          return true;
+          seenUrls.add(item.url)
+          return true
         }
-      });
-  
-      const promises: Promise<OGresult>[] = [];
+      })
+
+      const promises: Promise<OGresult>[] = []
       uniqueData.forEach((list: UrlData) => {
-        const options = { url: list.url };
-        promises.push(ogs(options));
-      });
-  
+        const options = { url: list.url }
+        promises.push(ogs(options))
+      })
+
       Promise.allSettled(promises).then(async (results) => {
-        const data: OpenGraphData[] = [];
+        const data: OpenGraphData[] = []
         results.forEach((result) => {
           if (result.status === "fulfilled" && result.value.result) {
-            data.push(result.value.result);
+            data.push(result.value.result)
           }
-        });
-  
+        })
+
         // Filter out unwanted domains from OpenGraph data
         const filteredData = data.filter((str) => {
-          const url = str.ogUrl || "";
-          const siteName = str.ogSiteName || "";
-          return !excludeDomainRegex.test(url || siteName);
-        });
-        const blocks = createSlackBlocks(filteredData.map(normalizeOGData));
-  
+          const url = str.ogUrl || ""
+          const siteName = str.ogSiteName || ""
+          return !excludeDomainRegex.test(url || siteName)
+        })
+        const blocks = createSlackBlocks(filteredData.map(normalizeOGData))
+
         if (WEBHOOK_URI) {
-          await axios.post(WEBHOOK_URI, {
-            username: "Slackify",
-            icon_emoji: ":meow_code:",
-            blocks: blocks,
-          });
+          try {
+            await axios.post(WEBHOOK_URI, {
+              blocks: blocks,
+            })
+          } catch (err) {
+            res.status(400).json({ error: "Invalid block data", blocks })
+          }
         }
-  
+
         // Send response with normalized OpenGraph data
-        res.status(200).json({ result: blocks });
-      });
+        res.status(200).json({ result: blocks })
+      })
     } catch (err: any) {
       // err contains sensitive info
-      throw new InternalError(err);
+      throw new InternalError()
     }
   }
 }
